@@ -18,7 +18,7 @@ https://linux-audit.com/audit-and-harden-your-ssh-configuration/
 
 - On your computer, go into you `.ssh` folder with `cd ~/.ssh`. If the folder does not exist create it using `mkdir ~/.ssh`.
 - Use `ssh-keygen -t rsa -b 4096` to generate a key pair. It is recommended that you name the key so that you can keep track of them.
-- You need to copy the public key you have just created to your server. To do that use `scp yourkey.pub username@serverip:`.
+- You need to copy the public key you have just created to your server. To do that use `scp yourkey.pub username@serverip:`. Do not forget the `:` at the end.
 - In order to be able to connect to the server using your SSH key, you need to add it to the `authorized_keys` file using `cat yourkey.pub >> .ssh/authorized_keys`. You can then delete the public key from the server using `rm yourkey.pub`.
 - Make a copy of the `sshd_config` with `sudo cp /etc/ssh/sshd_config /root/`.
 - Then need to edit the content of the SSH daemon configuration using `sudo nano /etc/ssh/sshd_config`.
@@ -67,11 +67,33 @@ At this point the Docker Engine should be up and running, you can check if docke
 
 https://docs.docker.com/compose/install/
 
-- Install Docker-compose
+Now we have to install Docker-compose. The following instruction are taken from https://docs.docker.com/compose/install/, go to this page for more details.
+
+- Run this command to download the current stable release of Docker Compose:
+
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+- Apply executable permissions to the binary:
+
+```
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+- Test the installation:
+
+```
+docker-compose --version
+```
 
 ## Deploying wg-easy and docker-pi-hole
 
-## Usefull resources
+## Upgrading
+
+## Changing the adlist
+
+## Useful resources
 
 - https://github.com/pi-hole/docker-pi-hole
 - https://github.com/WeeJeWel/wg-easy

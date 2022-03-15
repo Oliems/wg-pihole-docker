@@ -5,23 +5,22 @@ services:
 # https://github.com/WeeJeWel/wg-easy/blob/master/README.md
 
   wg-easy:
+    container_name: wg-easy
+    image: weejewel/wg-easy:latest
+    networks:
+      vpn_net:
+        ipv4_address: 172.28.0.3
     environment:
-      # !! Required:
+      # Required:
       # Change this to your host's public address
-       - WG_HOST: '0.0.0.0'
+       - WG_HOST: '0.0.0.0' # 🚨
        # Optional:
-       - PASSWORD: 'Set your password for the WebUI'
+       - PASSWORD: 'Set your password for the WebUI' # 🚨
       # - WG_PORT: '51820'
       # - WG_DEFAULT_ADDRESS: '10.8.0.x'
        - WG_DEFAULT_DNS: '172.28.0.2'
       # - WG_MTU: '1420'
       # - WG_ALLOWED_IPS: '192.168.15.0/24, 10.0.1.0/24'
-      
-    image: weejewel/wg-easy
-    container_name: wg-easy
-    networks:
-      vpn_net:
-        ipv4_address: 172.28.0.3
     volumes:
       - './etc-wireguard:/etc/wireguard'
     ports:
@@ -51,7 +50,7 @@ services:
       - "80:80/tcp"
     environment:
       TZ: 'Europe/Paris'
-      WEBPASSWORD: 'Set your password for the WebUI'
+      WEBPASSWORD: 'Set your password for the WebUI' # 🚨
       #VIRTUAL_HOST: 'pi.hole'
       PIHOLE_DNS_: '1.1.1.1;1.0.0.1'
       DNSMASQ_LISTENING: 'local'
