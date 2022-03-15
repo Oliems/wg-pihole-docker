@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# https://docs.pi-hole.net/guides/vpn/openvpn/firewall/
+# More informations about these rules at https://docs.pi-hole.net/guides/vpn/openvpn/firewall/
 
 # Clear out the entire firewall
 
@@ -33,7 +33,7 @@ iptables-legacy -X
 iptables -A INPUT -p tcp --destination-port 53 -j ACCEPT
 iptables -A INPUT -p udp --destination-port 53 -j ACCEPT
 iptables -A INPUT -p tcp --destination-port 80 -j ACCEPT
-iptables -A INPUT -p tcp --destination-port 22 -j ACCEPT # Change the port to match the one you chose in sshd_config
+iptables -A INPUT -p tcp --destination-port 22 -j ACCEPT # Change the port to match the one you chose in /etc/ssh/sshd_config
 iptables -A INPUT -p tcp --destination-port 51821 -j ACCEPT
 iptables -A INPUT -p udp --destination-port 51820 -j ACCEPT
 iptables -I INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -48,7 +48,7 @@ iptables -P INPUT DROP
 ip6tables -A INPUT -p tcp --destination-port 53 -j ACCEPT
 ip6tables -A INPUT -p udp --destination-port 53 -j ACCEPT
 ip6tables -A INPUT -p tcp --destination-port 80 -j ACCEPT
-ip6tables -A INPUT -p tcp --destination-port 22 -j ACCEPT # Change the port to match the one you chose in sshd_config
+ip6tables -A INPUT -p tcp --destination-port 22 -j ACCEPT # Change the port to match the one you chose in /etc/ssh/sshd_config
 ip6tables -A INPUT -p tcp --destination-port 51821 -j ACCEPT
 ip6tables -A INPUT -p udp --destination-port 51820 -j ACCEPT
 ip6tables -I INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT

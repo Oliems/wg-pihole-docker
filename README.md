@@ -3,39 +3,16 @@
 
  These instructions are meant for a Debian server and assume that you are using Linux or macOS.
 
-## Server configuration
-
-### User setup
+## Creating a user
 
 - SSH into the server using `ssh root@serverip` and run `apt-get update && apt-get upgrade`.
 - Create a new user with `useradd -m username` and set a password for this user with `passwd username`.
 - Add the newly created user to the `sudo` group with `adduser username sudo`.
 - Use `su username` to connect as the user you have just created.
 - By default Debian does not use `bash`, which means you won't have tab completion or syntax colouring. To remedy that use `chsh -s /bin/bash` then log out and log back in with `exit` and then `su username`.
-- If you get this error message :
-
-```
-perl: warning: Setting locale failed.
-perl: warning: Please check that your locale settings:
-    LANGUAGE = (unset),
-    LC_ALL = (unset),
-    LANG = "en_US.UTF-8"
-are supported and installed on your system.
-perl: warning: Falling back to the standard locale ("C").
-```
-
-You can add the following lines to your `.bashrc` :
-
-```
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_CTYPE=en_US.UTF-8
-```
-
 - In you home directory create a `.ssh` folder as well as a file named `authorized_keys` in it with `mkdir ~/.ssh && touch ~/.ssh/authorized_keys`.
 
-### SSH
+## Configuring SSH
 
 https://linux-audit.com/audit-and-harden-your-ssh-configuration/
 
@@ -49,28 +26,48 @@ https://linux-audit.com/audit-and-harden-your-ssh-configuration/
 - Once you have made changes in the `sshd_config` file restart the daemon using `sudo systemctl restart sshd`. If you have changed the SSH port, make sure to change the firewall rules accordingly before you log off.
 - From now on, in order to log back into your server you will have to use the following command `ssh -2 -i ~/.ssh/yourkey username@serverip -p portnumber`.
 
-### Firewall configuration
-
-https://docs.pi-hole.net/guides/vpn/openvpn/firewall/
-https://upcloud.com/community/tutorials/configure-iptables-debian/
+## Configuring the firewall
 
 - Install git with `sudo apt-get install git`
 - Clone this repository with `git clone https://github.com/Oliems/wg-pihole-docker.git`
-- Read, make changes if needed and then run the firewall script. Note that this script will erase all `iptables` rules and chains and replace them. If you run this script after the installation of Docker, you will need to run `service docker restart` in order to re-install the rules and chains Docker needs to run properly.
-- Make changes persistent
+- Read, make changes if needed and then run the firewall script with `sudo bash firewall-config.sh`. Note that this script will erase all `iptables` rules and chains and replace them. If you run this script after the installation of Docker, you will need to run `service docker restart` in order to re-install the rules and chains Docker needs to run properly.
+- By default, `iptables` rules are reset after a reboot. In order to restore them automatically you will need to install the package `iptables-persistent` with `sudo apt-get install iptables-persistent`. The installer will ask you if you want to save your current IPv4 and IPv6 rules, select `Yes` for both. If you were to make changes to the rules and want to save them again, use `sudo iptables-save > /etc/iptables/rules.v4` and/or or `sudo ip6tables-save > /etc/iptables/rules.v6`. You can also use `sudo netfilter-persistent save` to save both files at once and `sudo netfilter-persistent reload` to restore back to how they were last time you saved them.
 
-## Docker and Docker-compose installation
+## Installing Docker and Docker-compose
 
-curl -sSL https://get.docker.com | sh
-sudo usermod -aG docker $(whoami)
-exit
+The following instruction are taken from https://docs.docker.com/engine/install/debian/, go to this page for more details.
+
+```
+# Update the apt package index and install packages to allow apt to use a repository over HTTPS
+
+sudo apt-get update && sudo apt-get install ca-certificates curl gnupg lsb-release
+
+# Add Docker’s official GPG key:
+
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+# Use the following command to set up the stable repository:
+
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Update the apt package index, and install the latest version of Docker Engine and containerd:
+
+sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+
+At this point the Docker Engine should be up and running, you can check if docker.service is running with `systemctl --type=service`. Docker adds its own rules and chains to the `iptables` so you need to save them again so that they are restored at reboot using `sudo netfilter-persistent save`.
 
 https://docs.docker.com/compose/install/
 
-## Wireguard configuration
+- Install Docker-compose
 
-https://github.com/WeeJeWel/wg-easy/
+## Deploying wg-easy and docker-pi-hole
 
-## Pi-hole configuration
+## Usefull resources
 
-https://github.com/pi-hole/docker-pi-hole
+- https://github.com/pi-hole/docker-pi-hole
+- https://github.com/WeeJeWel/wg-easy
+- https://docs.pi-hole.net
+- https://docs.docker.com
