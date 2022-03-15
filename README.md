@@ -1,7 +1,7 @@
 # wg-pihole-docker
- Tutorial in order to setup a VPN and a DNS sinkhole on a Debian server, using Wireguard, Pi-hole and Docker.
+ Tutorial to setup a VPN and a DNS sinkhole on a Debian server, using Wireguard, Pi-hole and Docker.
 
- These instructions are meant for setting up a Debian server and assume that you are using Linux or macOS.
+ These instructions are meant for a Debian server and assume that you are using Linux or macOS.
 
 ## Server configuration
 

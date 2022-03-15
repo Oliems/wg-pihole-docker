@@ -14,7 +14,7 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 Protocol 2
 
-Port 2222
+Port 22 # Replace port 22 with a port between 1024 and 65536 and update the firewall accordingly.
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::
@@ -54,7 +54,7 @@ AuthorizedKeysFile	.ssh/authorized_keys .ssh/authorized_keys2
 # HostbasedAuthentication
 #IgnoreUserKnownHosts no
 # Don't read the user's ~/.rhosts and ~/.shosts files
-#IgnoreRhosts yes
+IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
 PasswordAuthentication no
@@ -101,7 +101,7 @@ PrintMotd no
 #Compression delayed
 #ClientAliveInterval 0
 #ClientAliveCountMax 3
-#UseDNS no
+UseDNS yes
 #PidFile /var/run/sshd.pid
 #MaxStartups 10:30:100
 #PermitTunnel no

@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
 
@@ -6,25 +6,24 @@ services:
 
   wg-easy:
     environment:
-      # ⚠️ Required:
+      # !! Required:
       # Change this to your host's public address
-      - WG_HOST=raspberrypi.local
-
-       Optional:
-       - PASSWORD=foobar123
-      # - WG_PORT=51820
-      # - WG_DEFAULT_ADDRESS=10.8.0.x
-       - WG_DEFAULT_DNS=172.28.1.2
-      # - WG_MTU=1420
-      # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
+       - WG_HOST: '0.0.0.0'
+       # Optional:
+       - PASSWORD: 'Set your password for the WebUI'
+      # - WG_PORT: '51820'
+      # - WG_DEFAULT_ADDRESS: '10.8.0.x'
+       - WG_DEFAULT_DNS: '172.28.0.2'
+      # - WG_MTU: '1420'
+      # - WG_ALLOWED_IPS: '192.168.15.0/24, 10.0.1.0/24'
       
     image: weejewel/wg-easy
     container_name: wg-easy
-            networks:
-            vpn_net:
-                ipv4_address: 172.28.1.3
+    networks:
+      vpn_net:
+        ipv4_address: 172.28.0.3
     volumes:
-      - .:/etc/wireguard
+      - './etc-wireguard:/etc/wireguard'
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
@@ -41,9 +40,10 @@ services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
-            networks:
-            vpn_net:
-                ipv4_address: 172.28.1.2
+    hostname: pi.hole
+    networks:
+      vpn_net:
+        ipv4_address: 172.28.0.2
     # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
     ports:
       - "53:53/tcp"
@@ -51,8 +51,10 @@ services:
       - "80:80/tcp"
     environment:
       TZ: 'Europe/Paris'
-      # WEBPASSWORD: 'set a secure password here or it will be random'
+      WEBPASSWORD: 'Set your password for the WebUI'
+      #VIRTUAL_HOST: 'pi.hole'
       PIHOLE_DNS_: '1.1.1.1;1.0.0.1'
+      DNSMASQ_LISTENING: 'local'
     # Volumes store your data between container upgrades
     volumes:
       - './etc-pihole:/etc/pihole'
@@ -61,3 +63,10 @@ services:
     cap_add:
       - NET_ADMIN
     restart: unless-stopped # Recommended but not required (DHCP needs NET_ADMIN)
+
+networks:
+  vpn_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
