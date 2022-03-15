@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# https://docs.pi-hole.net/guides/vpn/openvpn/firewall/
+
 # Clear out the entire firewall
 
 iptables -P INPUT ACCEPT
@@ -55,11 +57,3 @@ ip6tables -A INPUT -p udp --dport 80 -j REJECT --reject-with icmp6-port-unreacha
 ip6tables -A INPUT -p tcp --dport 443 -j REJECT --reject-with tcp-reset
 ip6tables -A INPUT -p udp --dport 443 -j REJECT --reject-with icmp6-port-unreachable
 ip6tables -P INPUT DROP
-
-# Restart Docker in order to re-create the Docker iptables rules
-
-service docker restart
-
-# Print iptables and ip6tables
-
-iptables -L --line-numbers && ip6tables -L --line-numbers
