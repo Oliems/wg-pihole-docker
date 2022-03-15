@@ -11,7 +11,7 @@
 - Create a new user with `useradd -m username` and set a password for this user with `passwd username`.
 - Add the newly created user to the `sudo` group with `adduser username sudo`.
 - Use `su username` to connect as the user you have just created.
-- By default Debian does not use `bash` which means you won't have tab completion or syntax colouring. To remedy that use `chsh -s /bin/bash` then log out and log back in with `exit` and then `su username`.
+- By default Debian does not use `bash`, which means you won't have tab completion or syntax colouring. To remedy that use `chsh -s /bin/bash` then log out and log back in with `exit` and then `su username`.
 - If you get this error message :
 
 ```
@@ -42,7 +42,7 @@ export LC_CTYPE=en_US.UTF-8
 - You need to copy the public key you have just created to your server. To do that use `scp yourkey.pub username@serverip:`.
 - In order to be able to connect to the server using your SSH key, you need to add it to the `authorized_keys` file using `cat yourkey.pub >> .ssh/authorized_keys`. You can then delete the public key from the server using `rm yourkey.pub`.
 - You then need to edit the content of the SSH daemon configuration using `sudo nano /etc/ssh/sshd_config`.
-- Here is an configuration example with some security hardening :
+- Here is an configuration example with some security hardening : [example-sshd_config]
 
 - You can find information about the different parameters in this file with `man sshd_config`.
 - Once you have made changes in the `sshd_config` file restart the daemon using `sudo systemctl restart sshd`.
