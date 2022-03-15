@@ -13,14 +13,14 @@ services:
     environment:
       # Required:
       # Change this to your host's public address
-       - WG_HOST: '0.0.0.0' # 🚨
+       - WG_HOST=0.0.0.0 # 🚨
        # Optional:
-       - PASSWORD: 'Set your password for the WebUI' # 🚨
-      # - WG_PORT: '51820'
-      # - WG_DEFAULT_ADDRESS: '10.8.0.x'
-       - WG_DEFAULT_DNS: '172.28.0.2'
-      # - WG_MTU: '1420'
-      # - WG_ALLOWED_IPS: '192.168.15.0/24, 10.0.1.0/24'
+       - PASSWORD=Set your password for the WebUI # 🚨
+      # - WG_PORT=51820
+      # - WG_DEFAULT_ADDRESS=10.8.0.x
+       - WG_DEFAULT_DNS=172.28.0.2
+      # - WG_MTU=1420
+      # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
     volumes:
       - './etc-wireguard:/etc/wireguard'
     ports:

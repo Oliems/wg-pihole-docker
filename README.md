@@ -14,8 +14,6 @@
 
 ## Configuring SSH
 
-https://linux-audit.com/audit-and-harden-your-ssh-configuration/
-
 - On your computer, go into you `.ssh` folder with `cd ~/.ssh`. If the folder does not exist create it using `mkdir ~/.ssh`.
 - Use `ssh-keygen -t rsa -b 4096` to generate a key pair. It is recommended that you name the key so that you can keep track of them.
 - You need to copy the public key you have just created to your server. To do that use `scp yourkey.pub username@serverip:`. Do not forget the `:` at the end.
@@ -89,9 +87,15 @@ docker-compose --version
 
 ## Deploying wg-easy and docker-pi-hole
 
+Modify docker-compose.yml to add your server's static IP and your passwords for the Wireguard and the Pi-hole WebUI's then from inside the `wg-pihole-docker` directory run `sudo docker-compose up -d`. You should now be able to access the Pi-hole WebUI at `yourserverip/admin` or at `pi.hole/admin` and the Wireguard WebUI at `yourserverip:51821`.
+
 ## Upgrading
 
+In order to upgrade, just stop and delete the container you want to upgarde using `sudo docker stop` and `sudo docker rm` then run `sudo docker-compose up -d`.
+
 ## Changing the adlist
+
+By default, Pi-hole uses [Stenven Black's hosts files](https://github.com/StevenBlack/hosts). To manage the adlists, on Pi-hole's admin page you can go to Group Management > Adlists then add or remove adlists as you see fit. Once you are done, go Setting and click on 'Restart DNS resolver' to apply the changes.
 
 ## Useful resources
 
