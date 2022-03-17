@@ -63,7 +63,7 @@ $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev
 sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io
 ```
 
-At this point the Docker Engine should be up and running, you can check if docker.service is running with `systemctl --type=service`. Docker adds its own rules and chains to the `iptables` so you need to save them again so that they are restored at reboot using `sudo netfilter-persistent save`.
+At this point the Docker Engine should be up and running, you can check if docker.service is running with `systemctl --type=service`.
 
 ### Docker-compose
 
@@ -97,7 +97,7 @@ In order to upgrade, just stop and delete the container you want to upgrade usin
 
 ## Changing the adlist
 
-By default, Pi-hole uses [Steven Black's hosts files](https://github.com/StevenBlack/hosts). To manage the adlists, on Pi-hole's admin page you can go to `Group Management > Adlists` then add or remove adlists as you see fit. Once you are done, go to the `Settings` page and click on `Restart DNS resolver` to apply the changes.
+By default, Pi-hole uses [Steven Black's hosts files](https://github.com/StevenBlack/hosts). To manage the adlists, on Pi-hole's admin page you can go to `Group Management > Adlists` then add or remove adlists as you see fit. Once you are done, go to `Tools > Update Gravity` and click on `Update` to apply the changes.
 
 ## Useful resources
 
